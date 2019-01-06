@@ -15,8 +15,18 @@ aPackageInfo = [
 	],
 	:libs = 	[
 		[
-			:name = "",
-			:version = "",
+			:name = "stdlib",
+			:version = "1.0",
+			:providerusername = ""
+		],
+		[
+			:name = "formdesigner",
+			:version = "1.0",
+			:providerusername = ""
+		],
+		[
+			:name = "libdepwin_apache",
+			:version = "1.0",
 			:providerusername = ""
 		]
 	],
