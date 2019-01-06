@@ -20,6 +20,11 @@ aPackageInfo = [
 			:providerusername = ""
 		],
 		[
+			:name = "ringqt",
+			:version = "1.0",
+			:providerusername = ""
+		],
+		[
 			:name = "formdesigner",
 			:version = "1.0",
 			:providerusername = ""
