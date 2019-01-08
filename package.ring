@@ -73,7 +73,6 @@ aPackageInfo = [
 		"applications/rnote/image/undo.png",
 		"applications/rnote/image/web.png",
 		"applications/rnote/README.md",
-		"applications/rnote/ringnotepad.ini",
 		"applications/rnote/rnote.ring",
 		"applications/rnote/rnoteactivefile.ring",
 		"applications/rnote/rnoteactivefolder.ring",
