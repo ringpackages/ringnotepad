@@ -272,6 +272,12 @@ class RNoteMainWindow
 						addaction(oAction)
 						addseparator()
 						oAction = new qAction(this.win1) {
+							setShortcut(new QKeySequence("Ctrl+h"))
+							settext("Set Tab Width")
+							setclickEvent(Method(:TabWidth))
+						}
+						addaction(oAction)
+						oAction = new qAction(this.win1) {
 							setShortcut(new QKeySequence("Ctrl+g"))
 							settext("Go to line")
 							setclickEvent(Method(:Goto))
@@ -285,10 +291,43 @@ class RNoteMainWindow
 						}
 						addaction(oAction)
 						addseparator()
+                                                oAction = new qAction(this.win1) {
+	                                                setShortcut(new QKeySequence("Ctrl+Shift+i"))
+	                                                settext("Insert Text")
+	                                                setclickEvent(Method(:OpenInsertWindow))
+                                                }
+						addaction(oAction)
 						oAction = new qAction(this.win1) {
-							setShortcut(new QKeySequence("Ctrl+h"))
-							settext("Set Tab Width")
-							setclickEvent(Method(:TabWidth))
+							setShortcut(new QKeySequence("Ctrl+Shift+L"))
+							settext("Lower case")
+							setclickEvent(Method(:lowerCase))
+						}
+						addaction(oAction)
+						oAction = new qAction(this.win1) {
+							setShortcut(new QKeySequence("Ctrl+Shift+U"))
+							settext("Upper case")
+							setclickEvent(Method(:upperCase))
+						}
+						addaction(oAction)
+						oAction = new qAction(this.win1) {
+							setShortcut(new QKeySequence("Ctrl+Shift+C"))
+							settext("Capitalize")
+							setclickEvent(Method(:capitalize))
+						}
+						addaction(oAction)
+						addseparator()
+						oAction = new qAction(this.win1) {
+							setShortcut(new QKeySequence("Ctrl+alt+C"))
+							setbtnimage(self,"image/comment2.png")
+							settext("Comment Lines")
+							setclickEvent(Method(:CommentLines))
+						}
+						addaction(oAction)
+						oAction = new qAction(this.win1) {
+							setShortcut(new QKeySequence("Ctrl+alt+B"))
+							setbtnimage(self,"image/comment.png")
+							settext("Comment Block Of Lines")
+							setclickEvent(Method(:CommentBlockLines))
 						}
 						addaction(oAction)
 						addseparator()
@@ -461,54 +500,63 @@ class RNoteMainWindow
 						subStyle = addmenu("Mode")
 						subStyle {
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+1"))
 								setclickEvent(Method("SetMode(1)"))
 								settext("General")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+2"))
 								setclickEvent(Method("SetMode(2)"))
 								settext("Learning Ring (Editor + Documentation)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+3"))
 								setclickEvent(Method("SetMode(3)"))
 								settext("Coding (Project File + Editor)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+4"))
 								setclickEvent(Method("SetMode(4)"))
 								settext("Coding (All Windows)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+5"))
 								setclickEvent(Method("SetMode(5)"))
 								settext("Coding (Code Editor)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+6"))
 								setclickEvent(Method("SetMode(6)"))
 								settext("GUI Development (Code Editor + Form Designer)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+7"))
 								setclickEvent(Method("SetMode(7)"))
 								settext("Web Development (Code Editor + Web Browser)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+8"))
 								setclickEvent(Method("SetMode(8)"))
 								settext("Testing (Project Files + Code Editor + Output Window)")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+9"))
 								setclickEvent(Method("SetMode(9)"))
 								settext("Common (All Windows + Output Window in the bottom)")
 							}
@@ -729,7 +777,7 @@ class RNoteMainWindow
 				setclickedEvent(Method(:ChangeFile))
 				setActivatedEvent(Method(:ChangeFile))
 				setGeometry(00,00,200,400)
-				setminimumwidth(250)
+				setminimumwidth(400)
                 		chdir(this.cStartUpFolder)
 				oDir = new QDir()
 				this.ofile = new QFileSystemModel() {
@@ -750,6 +798,7 @@ class RNoteMainWindow
 						append("*.md")
 						append("*.cf")
 						append("*.qml")
+						append("*.ini")
 					}
 					setnamefilters(myfiles)
 					setNameFilterDisables(false)
@@ -776,14 +825,19 @@ class RNoteMainWindow
 
 	func CreateSourceCode
 		win1 {
+			oTabsFilter = new qAllEvents(this.win1) {
+				setContextmenuEvent(Method(:TabsContextMenu))
+	                }
+
 			this.filestabs = new qTabWidget(this.win1) {
 				setFixedheight(35)
 				settabsclosable(True)
 				AddTab(new qWidget(),"noname")
 				setcurrentchangedevent(Method(:ChangeFileTab))
 				Settabcloserequestedevent(Method(:CloseFileTab))
-
+				installeventfilter(oTabsFilter)
 			}
+
 			this.textedit1 = new codeeditor(this.win1) {
 				setCursorPositionChangedEvent(Method(:CursorPositionChanged))
 				setLineWrapMode(QTextEdit_NoWrap)

@@ -91,7 +91,7 @@ class RNoteFind
 			setwinicon(this.oSearch,"image/notepad.png")
 			setWindowTitle("Find/Replace")
 			setFixedsize(550,160)
-			setwindowflags(Qt_CustomizeWindowHint | Qt_WindowTitleHint | Qt_WindowStaysOnTopHint)
+			setwindowflags(Qt_CustomizeWindowHint | Qt_WindowTitleHint) 
 			this.oSearchFilter = new qallevents(this.oSearch)
 			this.oSearchFilter.setKeyPressEvent(Method(:SearchKeyPress))
 			installeventfilter(this.oSearchFilter)
@@ -110,6 +110,7 @@ class RNoteFind
 			return false
 		ok
 		cValue = oSearchValue.text()
+		if len(cValue) < 1 return ok
 		cSelected = oCursor.SelectedText()
 		if oSearchCase.checkState() = Qt_Unchecked
 			cValue = lower(cValue)
@@ -129,13 +130,17 @@ class RNoteFind
 		nEnd = oCursor.SelectionEnd()
 		cStr = textedit1.toPlainText()
 		cStr = left(cStr,nStart)+cValue+substr(cStr,nEnd+1)
-		textedit1.setPlainText(cStr)
+		setTextAllowUndo(cStr)
+		oCursor.setposition(nEnd+1,1)
+		textedit1.settextcursor(oCursor)
 		return FindValue()
 
 	func ReplaceAll
 		cStr = textedit1.toPlainText()
 		cOldValue = oSearchValue.text()
 		cNewValue = oReplaceValue.text()
+		cnt = count(cStr,cOldValue)
+		if len(cStr) < 1 or len(cOldValue) < 1 return ok
 		if oSearchCase.checkState() = Qt_Unchecked
 			# Not Case Sensitive
 			cStr = SubStr(cStr,cOldValue,cNewValue,true)
@@ -143,11 +148,17 @@ class RNoteFind
 			# Case Sensitive
 			cStr = SubStr(cStr,cOldValue,cNewValue)
 		ok
-		textedit1.setPlainText(cStr)
+		if cStr != textedit1.toPlainText()
+			cMsg = "Operation Done"
+			cMsg = cMsg + " - Replaced : " + cnt
+		else 
+			cMsg = "Nothing to replace!"
+		ok
+		setTextAllowUndo(cStr)
 		new qMessagebox(oSearch)
 		{
 			SetWindowTitle("Replace All")
-			SetText("Operation Done")
+			SetText(cMsg)
 			show()
 		}
 
@@ -168,6 +179,7 @@ class RNoteFind
 		nPosStart = oCursor.Position() + 1
 		cValue = oSearchValue.text()
 		cStr = textedit1.toplaintext()
+		if len(cStr) < 1 or len(cValue) < 1 return ok
 		cStr = substr(cStr,nPosStart)
 		if oSearchCase.checkState() = Qt_Unchecked
 			cStr = lower(cStr)  cValue = lower(cValue)
@@ -186,7 +198,7 @@ class RNoteFind
 			new qMessagebox(oSearch)
 			{
 				SetWindowTitle("Search")
-				SetText("Cannot find :" + cValue)
+				SetText("Cannot find : " + cValue)
 				show()
 			}
 			return false
@@ -197,19 +209,21 @@ class RNoteFind
 		nPosStart = oCursor.Position()
 		cValue = oSearchValue.text()
 		cStr = textedit1.toplaintext()
+		if len(cStr) < 1 or len(cValue) < 1 return ok  
+		if nPosStart < 1 nPosStart = len(cStr) ok
 		cStr = substr(cStr,1,nPosStart-1)
 		if oSearchCase.checkState() = Qt_Unchecked
 			cStr = lower(cStr)  cValue = lower(cValue)
 		ok
                 cnt = count(cStr,cValue)
-                postemp = 1
+                postemp = 0
 		nPos = 0
                 for n = 1 to cnt
                       nPos = substring(cStr,cValue,postemp+1)
                       postemp = nPos
                 next
 		if nPos > 0
-                        nPos = nPos - 1
+                        nPos--
 			oCursor = textedit1.textcursor()
 			oCursor.setposition(nPos,0)
 			textedit1.settextcursor(oCursor)
@@ -221,16 +235,35 @@ class RNoteFind
 			new qMessagebox(oSearch)
 			{
 				SetWindowTitle("Search")
-				SetText("Cannot find :" + cValue)
+				SetText("Cannot find : " + cValue)
 				show()
 			}
 			return false
 		ok
 
         func count(cString,dString)
-             sum = 0
-             while substr(cString,dString) > 0
-                   sum = sum + 1
-                   cString = substr(cString,substr(cString,dString)+len(string(sum)))
-             end
-             return sum
+		sum = 0
+		while substr(cString,dString) > 0
+			sum++
+			cString = substr(cString,substr(cString,dString)+len(dString))
+		end
+		return sum
+
+	func setTextAllowUndo cText 
+		# Get the Text Size 
+			nTextSize = len(textedit1.toplaintext())
+		# Select All of the Text 
+			oCursor = textedit1.textcursor()
+			# Save the current position 
+				nPosStart = oCursor.Position()
+			oCursor.setposition(0,0)
+			textedit1.settextcursor(oCursor)
+			oCursor = textedit1.textcursor()
+			oCursor.setposition(nTextSize,1)
+			textedit1.settextcursor(oCursor)
+		# Set the new text using InsertPlainText() that support the Undo process 
+			textedit1.InsertPlainText(cText)
+		# Restore the Cursor Position 
+			oCursor = textedit1.textcursor()
+			oCursor.setposition(nPosStart,1)
+			textedit1.settextcursor(oCursor)
