@@ -12,7 +12,7 @@ class RNoteControllerBase from WindowsControllerParent
 	oTFont 			= new qfont("",0,0,0)
 	lSetProjectFilesFont	= True
 
-	cWebsite 		= "http://www.ring-lang.sf.net/doc1.10/index.html"
+	cWebsite 		= "http://www.ring-lang.sf.net/doc1.11/index.html"
 
 	cCurrentDir 		= CurrentDir() + "/"	# The Ring Notepad Folder
 	cStartUpFolder 		= exefolder() + "/../applications/"
@@ -29,7 +29,7 @@ class RNoteControllerBase from WindowsControllerParent
 	nTabSpaces 		= 8
 
 	aBrowserLinks 		= [
-		["Local Help", "file:///"+exefolder() + "../docs/build/html/index.html"],
+		["Local Help", "file:///"+substr(exefolder(),"\","/") + "../docs/build/html/index.html"],
 		["Localhost","http://localhost"],
 		["Ring Website","http://ring-lang.sf.net"],
 		["Ring Group (Google Groups)","https://groups.google.com/forum/#!forum/ring-lang"],
