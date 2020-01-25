@@ -21,10 +21,18 @@ class RNoteOutputWindow
 	func GetProcessData 
 		if ISNULL(oProcess) return ok
 		cText = oProcess.readallstandardoutput().data()
+		if isWindows()
+			cText += WindowsNl()
+		ok
 		# Set the font
 			oTFont.fromstring(cFont)
 			oProcessEditbox.setFont(oTFont)
 		oProcessEditbox.insertplaintext(cText)
+		oCursor = oProcessEditbox.textcursor()
+		nPos = max(len(oProcessEditbox.toplaintext())-1,0)
+		oCursor.setPosition(nPos,QTextCursor_KeepAnchor)
+		oCursor.setPosition(nPos,QTextCursor_MoveAnchor)
+		oProcessEditbox.setTextCursor(oCursor)
 
 	func SendProcessData
 		if ISNULL(oProcess) return ok
