@@ -392,10 +392,18 @@ class RNoteMainWindow
 						addaction(oAction)
 						addseparator()
 						oAction = new qAction(this.win1) {
-							setShortcut(new QKeySequence("CTRL+SHIFT+f"))
+							setShortcut(new QKeySequence("CTRL+SHIFT+F"))
 							setbtnimage(self,"image/formdesigner.png")
 							setclickEvent(Method(:FormDesignerWindowStatus))
 							settext("Form Designer Window")
+						}
+						addaction(oAction)
+						addseparator()
+						oAction = new qAction(this.win1) {
+							setclickEvent(Method(:EditFullScreen))
+							setbtnimage(self,"image/source.png")
+							setShortcut(new QKeySequence("Ctrl+Shift+F1"))
+							settext("Source Code (Full Screen)")
 						}
 						addaction(oAction)
 						addseparator()
@@ -403,96 +411,112 @@ class RNoteMainWindow
 						subStyle {
 							setbtnimage(self,"image/colors.png")
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+W"))
 								setclickEvent(Method("SetStyleColor(0)"))
 								settext("Windows")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+2"))
 								setclickEvent(Method("SetStyleColor(1)"))
 								settext("Fusion : White")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+3"))
 								setclickEvent(Method("SetStyleColor(2)"))
 								settext("Fusion : Blue")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+4"))
 								setclickEvent(Method("SetStyleColor(3)"))
 								settext("Fusion : Black")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+5"))
 								setclickEvent(Method("SetStyleColor(4)"))
 								settext("Modern")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+6"))
 								setclickEvent(Method("SetStyleColor(5)"))
 								settext("Modern : Black")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+7"))
 								setclickEvent(Method("SetStyleColor(6)"))
 								settext("Modern : Black 2")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+8"))
 								setclickEvent(Method("SetStyleColor(7)"))
 								settext("Notepad : White")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+9"))
 								setclickEvent(Method("SetStyleColor(8)"))
 								settext("Notepad : Purple")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+A"))
 								setclickEvent(Method("SetStyleColor(9)"))
 								settext("Notepad : DarkBlue")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F7"))
 								setclickEvent(Method("SetStyleColor(10)"))
 								settext("Notepad : Black")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F8"))
 								setclickEvent(Method("SetStyleColor(11)"))
 								settext("Art")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F9"))
 								setclickEvent(Method("SetStyleColor(12)"))
 								settext("Art 2")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F10"))
 								setclickEvent(Method("SetStyleColor(13)"))
 								settext("Art 3")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F11"))
 								setclickEvent(Method("SetStyleColor(14)"))
 								settext("Image")
 							}
 							addaction(oAction)
 							addseparator()
 							oAction = new qAction(this.win1) {
+								setShortcut(new QKeySequence("Ctrl+Shift+F12"))
 								setclickEvent(Method("SetStyleColor(15)"))
 								settext("Image 2")
 							}
@@ -846,6 +870,10 @@ class RNoteMainWindow
 				setTextChangedEvent(Method(:TextChanged))
 				setLineNumbersAreaColor(this.aStyleColors[:LineNumbersAreaColor])
 				setLineNumbersAreaBackColor(this.aStyleColors[:LineNumbersAreaBackColor])
+				this.oFilterTextEdit = new qAllEvents(this.win1)
+				this.oFilterTextEdit.setkeypressevent(Method(:TextEditKeyPress))
+				installEventFilter(this.oFilterTextEdit)
+
 			}
 			this.AutoComplete()
 			this.oACTimer = new qtimer(this.win1) {
@@ -865,17 +893,17 @@ class RNoteMainWindow
 					this.aStyleColors[:SyntaxFunctionCallsColor]
 				)
 			}
-			oTabsAndText = new qWidget() {
-				oLayoutTabsText = new qVBoxlayout() {
+			this.oTabsAndText = new qWidget() {
+				this.oLayoutTabsText = new qVBoxlayout() {
 					AddWidget(this.filestabs)
 					AddWidget(this.textedit1)
 					setContentsMargins(0,0,0,0)
 					setspacing(0)
 				}
-				setLayout(oLayoutTabsText)
+				setLayout(this.oLayoutTabsText)
 			}
 			this.oDockSourceCode = new qdockwidget(this.win1,0) {
-				setwidget(oTabsAndText)
+				setwidget(this.oTabsAndText)
 				setwindowtitle("Source Code")
 				setminimumwidth(floor(this.oDesktop.width()*0.17))                                                     
 			}
@@ -1014,3 +1042,27 @@ class RNoteMainWindow
 	func RingNotepadXButton
 		SaveSettings() 
 
+	func EditFullScreen
+		if lEditboxFullScreen 
+			oDockSourceCode { show() raise() }
+			textedit1.setParent(oTabsAndText)
+			oLayoutTabsText.AddWidget(textedit1)
+			textedit1 { show() setfocus(7) }
+		else 
+			oDockSourceCode.hide()
+			textedit1 { 
+				setParent(NULL)
+				showfullscreen()
+				setfocus(7)
+			}
+		ok
+		lEditboxFullScreen = ! lEditboxFullScreen 
+
+	func TextEditKeyPress
+		nKeyCode = this.oFilterTextEdit.getkeycode()
+		# Check CTRL+SHIFT+F1
+		if lEditboxFullScreen and nKeyCode = Qt_Key_Escape
+			EditFullScreen()
+			return
+		ok
+		this.oFilterTextEdit.setEventoutput(False)
