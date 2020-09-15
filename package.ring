@@ -45,6 +45,7 @@ aPackageInfo = [
 		"README.md"
 	],
 	:ringfolderfiles = 	[
+		"RingNotepad.exe",
 		"tools/ringnotepad/batch/killwebserver.bat",
 		"tools/ringnotepad/batch/run.bat",
 		"tools/ringnotepad/batch/run2.bat",
