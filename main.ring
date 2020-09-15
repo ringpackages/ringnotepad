@@ -7,6 +7,6 @@ func main
 	? "See the folder : ring/tools/ringnotepad"
 	? copy("=",C_LINESIZE)
 	cDir = currentdir()
-	chdir(exefolder()+"/../tools/ringnotepad)
+	chdir(exefolder()+"/../tools/ringnotepad")
 	system("ring rnote.ring")
 	chdir(cDir)
