@@ -29,13 +29,11 @@ class RNoteControllerBase from WindowsControllerParent
 	nTabSpaces 		= 8
 
 	aBrowserLinks 		= [
-		["Local Help", "file:///"+substr(exefolder(),"\","/") + "../docs/build/html/index.html"],
-		["Localhost","http://localhost"],
+		["Local Help", "file:///"+substr(exefolder(),"\","/") + "../documents/build/html/index.html"],
 		["Ring Website","http://ring-lang.sf.net"],
-		["Ring Group (Google Groups)","https://groups.google.com/forum/#!forum/ring-lang"],
-		["Ring Source Code (GitHub)","https://github.com/ring-lang/ring"],
 		["Ring Samples (Rosetta Code)","https://rosettacode.org/wiki/Category:Ring"],
 		["Ring Resources","http://ring-lang.sourceforge.net/resources.html"],
+		["Ring Source Code (GitHub)","https://github.com/ring-lang/ring"],
 		["Ring Team","http://ring-lang.sourceforge.net/team.html"]
 	]
 
@@ -51,6 +49,7 @@ class RNoteControllerBase from WindowsControllerParent
 		colorBlack  		= new qColor() { setrgb(0,0,0,255) }
 		colorSilver 		= new qColor() { setrgb(128,128,128,255) }
 		colorPurple 		= new qColor() { setrgb(128,0,128,255) }
+		colordarkBlue2   	= new qcolor() { setrgb(0,0,100,255) }
 
 	# Default Editor Style Colors
 		aStyleColors = [
@@ -139,3 +138,9 @@ class RNoteControllerBase from WindowsControllerParent
 
 	# Settings 
 		cSettingsFile 	= cCurrentDir + "ringnotepad.ini"
+
+	# Editbox FullScreen Mode 
+		lEditboxFullScreen = False 
+		oFilterTextEdit 
+		oTabsAndText
+		oLayoutTabsText

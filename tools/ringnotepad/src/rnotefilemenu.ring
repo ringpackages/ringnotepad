@@ -34,6 +34,7 @@ class RNoteFileMenu
 		return cName
 
 	func Open
+		CheckSaveBeforeChange()	# To ask about saving a file
 		new qfiledialog(this.win1) {
 			this.SaveCurrentFolder()
 			cName = getopenfilename(this.win1,"open file",this.cStartupFolder,"source files(*.ring)")
@@ -49,6 +50,9 @@ class RNoteFileMenu
 			cActiveFileName = cName
 			this.aFilesLines[this.cActiveFileName] = 1
 			SetActiveFileName()
+			lAsktoSave = False
+			cTextHash  = sha256(textedit1.toplaintext())
+			DisplayFunctionsAndClasses()
 		catch 
 			msginfo("Sorry","Can't open the file : " + cName)
 		done
@@ -116,5 +120,4 @@ class RNoteFileMenu
 
 	func Quit
 		SaveSettings()
-		oApp.quit()
-
+		win1.close()

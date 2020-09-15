@@ -5,12 +5,12 @@ class RNoteHelp
 
 	func OpenCHM
 		new QDesktopServices {
-			OpenURL(new qURL("file:///"+substr(exefolder(),"\","/")+"../docs/ring.chm") )
+			OpenURL(new qURL("file:///"+substr(exefolder(),"\","/")+"../documents/ring.chm") )
 		}
 
 	func OpenPDF
 		new QDesktopServices {
-			OpenURL(new qURL("file:///"+substr(exefolder(),"\","/")+"../docs/ring.pdf") )
+			OpenURL(new qURL("file:///"+substr(exefolder(),"\","/")+"../documents/ring.pdf") )
 		}
 
 	func MsgBox cTitle,cMessage
@@ -23,12 +23,12 @@ class RNoteHelp
 
 	func Lang
 		MsgBox("Programming Language",
-			"This application developed using the Ring programming language" + nl +
+			"This application is developed using the Ring programming language" + nl +
 			"Ring Version : " + version())
 
 	func GUI
 		MsgBox("GUI Library",
-			"This application uses the Qt GUI Library through RingQt")
+			"This application uses the Qt Framework through RingQt")
 
 	func pAbout
 		MsgBox("About",

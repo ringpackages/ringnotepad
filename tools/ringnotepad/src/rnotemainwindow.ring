@@ -744,6 +744,12 @@ class RNoteMainWindow
 							setclickEvent(Method("Distribute(7)"))
 						}
 						addaction(oAction)
+						addseparator()
+						oAction = new qAction(this.win1) {
+							settext("Ring2EXE (Prepare Qt Project - Distribute for Web Browsers using WebAssembly)")
+							setclickEvent(Method("Distribute(8)"))
+						}
+						addaction(oAction)
 					}
 					subHelp {
 						subHelpLF = addmenu("Language Reference")
@@ -819,12 +825,14 @@ class RNoteMainWindow
 						append("*.js")
 						append("*.xml")
 						append("*.data")
+						append("*.template")
 						append("*.sh")
 						append("*.bat")
 						append("*.md")
 						append("*.cf")
 						append("*.qml")
 						append("*.ini")
+						append("*.qrc")
 					}
 					setnamefilters(myfiles)
 					setNameFilterDisables(false)
@@ -839,7 +847,7 @@ class RNoteMainWindow
 				header().hide()
 				chdir(exefolder())
 				if not ismacosx()
-					this.cWebsite = "file:///"+oDir.CurrentPath() + "/../docs/build/html/index.html"
+					this.cWebsite = "file:///"+oDir.CurrentPath() + "/../documents/build/html/index.html"
 				ok
 			}
 			this.oDockProjectFiles = new qdockwidget(this.win1,0) {
@@ -912,7 +920,6 @@ class RNoteMainWindow
 	func CreateWebBrowser
 		win1 {
 			this.oWebBrowser = new qWidget() {
-				setstylesheet("color: black ; background-color: rgba(239,235,231,255);")
 				setWindowFlags(Qt_SubWindow)
 				oWBLabel = new qLabel(this.win1) {
 					setText("Website: ")

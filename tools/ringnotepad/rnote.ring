@@ -7,13 +7,13 @@
 	load "openssllib.ring"
 
 # Load Ring Notepad Files 
-	load "rnotefiles.ring"
+	load "src/rnotefiles.ring"
 
 # Load the Form Designer 
 	load "../formdesigner/formdesigner.ring"
 
 # Load the Web Server - ServerPrepare Class
-	load "../libdepwin/Apache2.2/ring/prepare.ring"
+	load "../extensions/libdepwin/Apache2.2/ring/prepare.ring"
 
 # Load the Find in files application 
 	load "../findinfiles/findinfilesController.ring"
