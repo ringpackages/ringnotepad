@@ -93,16 +93,24 @@ class RNoteFileMenu
 		aCode = str2list(cCode)
 		cFileName = FileNameEncoding(cFileName)
 		fp = fopen(cFileName,"wb")
+		if isWindows()
+			aLineFeed = char(13)+char(10)
+		else
+			aLineFeed = char(10)
+		ok
 		for cLine in aCode
-			fwrite(fp,cLine+char(13)+char(10))
+			fwrite(fp,cLine+aLineFeed)
 		next
 		fclose(fp)
 
 	func FileNameEncoding cFileName
-		if isWindows()
-			oString = new qString2()
-			oString.Append(cFileName)
-			return oString.tolocal8bit().data()
+	    # Starting from Ring 1.16 - We don't need this function
+		if number(version()) <= 1.15
+			if isWindows()
+				oString = new qString2()
+				oString.Append(cFileName)
+				return oString.tolocal8bit().data()
+			ok
 		ok
 		return cFileName
 
