@@ -6,27 +6,21 @@ class RNoteGoto
 	func Goto
 		oInput = New QInputDialog(win1)
 		{
-			setwindowtitle("Enter the line number?")
+			setwindowtitle(T_RINGNOTEPAD_ENTERTHELINENUMBER) # "Enter the line number?"
 			setgeometry(100,100,400,50)
-			setlabeltext("Line")
-			settextvalue("1")
+			setlabeltext(T_RINGNOTEPAD_LINE) # "Line"
+			settextvalue(T_RINGNOTEPAD_DEFAULTLINE) # "1"
 			r = exec()
 		}
 		if r=0 return ok
 		nLine = 0 + oInput.textvalue()
 		gotoline(nLine)
-
-	func GotoLine nLine
-		nLine--
-		cStr = textedit1.toPlainText()
-		nSize = len(cStr)
-		for t=1 to nSize
-			if cStr[t] = nl nLine-- ok
-			if nLine = 0
-				oCursor = textedit1.textcursor()
-				oCursor.setposition(t,0)
-				textedit1.settextcursor(oCursor)
-				exit
-			ok
-		next
-
+ 
+	func GotoLine nLine 
+		// This function support source code that contains UTF-8 characters 
+		// Get the character position
+			nPos = textedit1.document().findblockbylinenumber(nLine-1).position()
+		// Set the current character 
+			oCursor = textedit1.textcursor()
+			oCursor.setposition(nPos,0)
+			textedit1.settextcursor(oCursor)

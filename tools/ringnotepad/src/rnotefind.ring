@@ -5,15 +5,17 @@
 class RNoteFind
 
 	func OpenFindWindow
+
 		if isobject(oSearch)
 			oSearch.activatewindow()
 			return
 		ok
+
 		oSearch = new qWidget()
 		{
 			oLblFindWhat = new qLabel(this.oSearch)
 			{
-				setText("Find What : ")
+				setText(T_RINGNOTEPAD_FINDWINDOWFINDWHAT) # "Find What : "
 			}
 			this.oSearchValue = new qlineedit(this.oSearch)
 			{
@@ -27,7 +29,7 @@ class RNoteFind
 			}
 			oLblReplaceWith = new qLabel(this.oSearch)
 			{
-				setText("Replace with ")
+				setText(T_RINGNOTEPAD_FINDWINDOWREPLACEWITH) # "Replace with "
 			}
 			this.oReplaceValue = new qlineedit(this.oSearch)
 			{
@@ -41,7 +43,7 @@ class RNoteFind
 			}
 			this.oSearchCase = new qCheckbox(this.oSearch)
 			{
-				setText("Case Sensitive")
+				setText(T_RINGNOTEPAD_FINDWINDOWCASESENSITIVE) # "Case Sensitive"
 			}
 			oLayout3 = new qHBoxLayout()
 			{
@@ -49,27 +51,27 @@ class RNoteFind
 			}
 			oBtnFind = new qPushButton(this.oSearch)
 			{
-				setText("Find/Find Next")
+				setText(T_RINGNOTEPAD_FINDWINDOWFINDFINDNEXT) # "Find/Find Next"
 				setclickEvent(Method(:FindValue))
 			}
 			oBtnFindPrev = new qPushButton(this.oSearch)
 			{
-				setText("Find/Find Prev")
+				setText(T_RINGNOTEPAD_FINDWINDOWFINDFINDPREV) # "Find/Find Prev"
 				setclickEvent(Method(:FindPrevValue))
 			}
 			oBtnReplace = new qPushButton(this.oSearch)
 			{
-				setText("Replace")
+				setText(T_RINGNOTEPAD_FINDWINDOWREPLACE) # "Replace"
 				setclickEvent(Method(:Replace))
 			}
 			oBtnReplaceAll = new qPushButton(this.oSearch)
 			{
-				setText("Replace All")
+				setText(T_RINGNOTEPAD_FINDWINDOWREPLACEALL) # "Replace All"
 				setclickEvent(Method(:ReplaceAll))
 			}
 			oBtnClose = new qPushButton(this.oSearch)
 			{
-				setText("Close")
+				setText(T_RINGNOTEPAD_FINDWINDOWCLOSE) # "Close"
 				setclickEvent(Method(:SearchClose))
 			}
 			oLayout4 = new qHBoxLayout()
@@ -89,7 +91,7 @@ class RNoteFind
 			}
 			setLayout(oLayout5)
 			setwinicon(this.oSearch,"image/notepad.png")
-			setWindowTitle("Find/Replace")
+			setWindowTitle(T_RINGNOTEPAD_FINDWINDOWFINDREPLACE) # "Find/Replace"
 			setFixedsize(550,160)
 			setwindowflags(Qt_CustomizeWindowHint | Qt_WindowTitleHint) 
 			this.oSearchFilter = new qallevents(this.oSearch)
@@ -98,17 +100,70 @@ class RNoteFind
 			show()
 		}
 
+	func FindValue
+
+		# Check the content and the search value
+			cStr = textedit1.toplaintext()
+			cValue = oSearchValue.text()
+			if len(cStr) < 1 or len(cValue) < 1 return ok
+
+		# Get the cursor position 
+			nPosStart = CursorPosition()
+
+		# Find the sub string 
+			oContent = ToQString(cStr)
+			nPos = oContent.indexof(cValue,nPosStart,IsNotCaseSensitive())		
+
+		return SelectSearchResult(cValue,nPos)
+
+	func FindPrevValue
+
+		# Check the content and the search value
+			cStr = textedit1.toplaintext()
+			cValue = oSearchValue.text()
+			if len(cStr) < 1 or len(cValue) < 1 return ok
+
+		# Get the cursor position 
+			oCursor = textedit1.textcursor()
+			nPosStart = oCursor.Position()
+			if oCursor.HasSelection()
+				nPosStart = oCursor.SelectionStart()
+			ok
+			nPosStart--
+			nPosStart = max(nPosStart,0)
+
+		# Find the sub string 
+			oContent = ToQString(cStr)
+			nPos = oContent.lastindexof(cValue,nPosStart,IsNotCaseSensitive())		
+
+		return SelectSearchResult(cValue,nPos)
+
+	func IsNotCaseSensitive
+			return ! (oSearchCase.checkState() = Qt_Unchecked)
+
+	func SelectSearchResult cValue,nPos
+
+		# Get the substring size 
+			nSize = UTF8Size(cValue)
+
+		# If we have the substring then select it 		
+			if nPos >= 0
+				SelectFromTo(nPos,nPos+nSize)
+				return true
+			ok
+
+		return nooutput(cValue)
+
 	func Replace
+
 		oCursor = textedit1.textCursor()
+
 		if oCursor.HasSelection() = false
-			new qMessagebox(oSearch)
-			{
-				SetWindowTitle("Replace")
-				SetText("No Selection")
-				show()
-			}
+			SearchMessage(T_RINGNOTEPAD_FINDWINDOWREPLACE,
+							T_RINGNOTEPAD_FINDWINDOWNOSELECTION)
 			return false
 		ok
+
 		cValue = oSearchValue.text()
 		if len(cValue) < 1 return ok
 		cSelected = oCursor.SelectedText()
@@ -117,30 +172,33 @@ class RNoteFind
 			cSelected = lower(cSelected)
 		ok
 		if cSelected != cValue
-			new qMessagebox(oSearch)
-			{
-				SetWindowTitle("Replace")
-				SetText("No Match")
-				show()
-			}
+			SearchMessage(T_RINGNOTEPAD_FINDWINDOWREPLACE,
+							T_RINGNOTEPAD_FINDWINDOWNOMATCH)
 			return false
 		ok
+
 		cValue = oReplaceValue.text()
 		nStart = oCursor.SelectionStart()
 		nEnd = oCursor.SelectionEnd()
 		cStr = textedit1.toPlainText()
-		cStr = left(cStr,nStart)+cValue+substr(cStr,nEnd+1)
+
+		oString = ToQString(cStr)
+
+		cStr = oString.mid(0,nStart) + cValue + oString.mid(nEnd,-1)
+
 		setTextAllowUndo(cStr)
 		oCursor.setposition(nEnd+1,1)
 		textedit1.settextcursor(oCursor)
 		return FindValue()
 
 	func ReplaceAll
+
 		cStr = textedit1.toPlainText()
 		cOldValue = oSearchValue.text()
 		cNewValue = oReplaceValue.text()
 		cnt = count(cStr,cOldValue)
 		if len(cStr) < 1 or len(cOldValue) < 1 return ok
+
 		if oSearchCase.checkState() = Qt_Unchecked
 			# Not Case Sensitive
 			cStr = SubStr(cStr,cOldValue,cNewValue,true)
@@ -148,100 +206,71 @@ class RNoteFind
 			# Case Sensitive
 			cStr = SubStr(cStr,cOldValue,cNewValue)
 		ok
+
 		if cStr != textedit1.toPlainText()
-			cMsg = "Operation Done"
-			cMsg = cMsg + " - Replaced : " + cnt
+			setTextAllowUndo(cStr)
+			cMsg = T_RINGNOTEPAD_FINDWINDOWOPERATIONDONE # "Operation Done"
+			cMsg = cMsg + T_RINGNOTEPAD_FINDWINDOWREPLACED + cnt
 		else 
-			cMsg = "Nothing to replace!"
+			cMsg = T_RINGNOTEPAD_FINDWINDOWNOTHINGTOREPLACE # "Nothing to replace!"
 		ok
-		setTextAllowUndo(cStr)
+
+		SearchMessage(T_RINGNOTEPAD_FINDWINDOWREPLACEALL,cMsg)
+
+	func setTextAllowUndo cText 
+
+		# Get the Text Size 
+			nTextSize = UTF8Size(textedit1.toplaintext())
+
+		# Select All of the Text 
+			# Save the current position 
+				nPosStart = CursorPosition()
+
+			SetCursorPosition(0,0)
+			SetCursorPosition(nTextSize,1)
+
+		# Set the new text using InsertPlainText() that support the Undo process 
+			textedit1.InsertPlainText(cText)
+
+		# Restore the Cursor Position
+			SetCursorPosition(nPosStart,0)
+
+	func ToQString cStr 
+			oString = new QString2()
+			oString.append(cStr)
+			return oString
+
+	func UTF8Size cStr 
+			oString = ToQString(cStr)
+			return oString.count()
+
+	func SelectFromTo nFrom,nTo
+			SetCursorPosition(nFrom,0)
+			SetCursorPosition(nTo,1)
+
+	func CursorPosition 
+			oCursor = textedit1.textcursor()
+			return oCursor.Position()
+
+	func SetCursorPosition nIndex,lFlag
+			oCursor = textedit1.textcursor()
+			oCursor.setposition(nIndex,lFlag)
+			textedit1.settextcursor(oCursor)
+
+	func NoOutput cValue
+		SearchMessage(T_RINGNOTEPAD_FINDWINDOWSEARCH,
+						T_RINGNOTEPAD_FINDWINDOWCANNOTFIND + cValue)
+		return false
+
+	func SearchMessage cTitle,cContent
 		new qMessagebox(oSearch)
 		{
-			SetWindowTitle("Replace All")
-			SetText(cMsg)
+			SetWindowTitle(cTitle)
+			SetText(cContent)
 			show()
 		}
 
-	func SearchClose
-		oSearch.close()
-		oSearch = NULL
-		cSearchText = oSearchValue.text()
-		cReplaceText = oReplaceValue.text()
-
-
-	func SearchKeyPress
-		if oSearchFilter.getKeyCode() = Qt_Key_Escape
-			SearchClose()
-		ok
-
-	func FindValue
-		oCursor = textedit1.textcursor()
-		nPosStart = oCursor.Position() + 1
-		cValue = oSearchValue.text()
-		cStr = textedit1.toplaintext()
-		if len(cStr) < 1 or len(cValue) < 1 return ok
-		cStr = substr(cStr,nPosStart)
-		if oSearchCase.checkState() = Qt_Unchecked
-			cStr = lower(cStr)  cValue = lower(cValue)
-		ok
-		nPos = substr(cStr,cValue)
-		if nPos > 0
-			nPos += nPosStart - 2
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nPos,0)
-			textedit1.settextcursor(oCursor)
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nPos+len(cValue),1)
-			textedit1.settextcursor(oCursor)
-			return true
-		else
-			new qMessagebox(oSearch)
-			{
-				SetWindowTitle("Search")
-				SetText("Cannot find : " + cValue)
-				show()
-			}
-			return false
-		ok
-
-	func FindPrevValue
-		oCursor = textedit1.textcursor()
-		nPosStart = oCursor.Position()
-		cValue = oSearchValue.text()
-		cStr = textedit1.toplaintext()
-		if len(cStr) < 1 or len(cValue) < 1 return ok  
-		if nPosStart < 1 nPosStart = len(cStr) ok
-		cStr = substr(cStr,1,nPosStart-1)
-		if oSearchCase.checkState() = Qt_Unchecked
-			cStr = lower(cStr)  cValue = lower(cValue)
-		ok
-                cnt = count(cStr,cValue)
-                postemp = 0
-		nPos = 0
-                for n = 1 to cnt
-                      nPos = substring(cStr,cValue,postemp+1)
-                      postemp = nPos
-                next
-		if nPos > 0
-                        nPos--
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nPos,0)
-			textedit1.settextcursor(oCursor)
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nPos+len(cValue),1)
-			textedit1.settextcursor(oCursor)
-			return true
-		else
-			new qMessagebox(oSearch)
-			{
-				SetWindowTitle("Search")
-				SetText("Cannot find : " + cValue)
-				show()
-			}
-			return false
-		ok
-
-        func count(cString,dString)
+	func Count cString,dString
 		sum = 0
 		while substr(cString,dString) > 0
 			sum++
@@ -249,21 +278,13 @@ class RNoteFind
 		end
 		return sum
 
-	func setTextAllowUndo cText 
-		# Get the Text Size 
-			nTextSize = len(textedit1.toplaintext())
-		# Select All of the Text 
-			oCursor = textedit1.textcursor()
-			# Save the current position 
-				nPosStart = oCursor.Position()
-			oCursor.setposition(0,0)
-			textedit1.settextcursor(oCursor)
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nTextSize,1)
-			textedit1.settextcursor(oCursor)
-		# Set the new text using InsertPlainText() that support the Undo process 
-			textedit1.InsertPlainText(cText)
-		# Restore the Cursor Position 
-			oCursor = textedit1.textcursor()
-			oCursor.setposition(nPosStart,1)
-			textedit1.settextcursor(oCursor)
+	func SearchKeyPress
+		if oSearchFilter.getKeyCode() = Qt_Key_Escape
+			SearchClose()
+		ok
+
+	func SearchClose
+		oSearch.close()
+		oSearch = NULL
+		cSearchText = oSearchValue.text()
+		cReplaceText = oReplaceValue.text()

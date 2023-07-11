@@ -7,32 +7,31 @@ class RNoteEditMenu
 
 	func Undo
 		textedit1.undo()
-		StatusMessage("Undo!")
+		StatusMessage(T_RINGNOTEPAD_STATUSUNDO) # "Undo!"
 
 	func Cut
 		textedit1.cut()
-		StatusMessage("Cut!")
+		StatusMessage(T_RINGNOTEPAD_STATUSCUT) # "Cut!"
 
 	func CopyText
 		textedit1.copy()
-		StatusMessage("Copy!")
+		StatusMessage(T_RINGNOTEPAD_STATUSCOPY) # "Copy!"
 
 	func Paste
 		textedit1.paste()
-		StatusMessage("Paste!")
+		StatusMessage(T_RINGNOTEPAD_STATUSPASTE) # "Paste!"
 
 	func Font
 		oFontDialog = new qfontdialog() {
-
 			this.oTFont.fromstring(this.cFont)
 			setcurrentfont(this.oTFont)
-
-			aFont = getfont()
+			setFontSelectedEvent(this.Method(:FontAction))
+			show()
 		}
-		if aFont[1] != NULL
-			cFont = aFont[1]
-			SetFont()	# set the new font
-		ok
+
+	func FontAction	
+		cFont = oFontDialog.selectedfont().tostring()
+		SetFont()	# set the new font
 
 	func SetFont
 		oTFont.fromstring(cFont)
@@ -109,15 +108,18 @@ class RNoteEditMenu
 	func CommentLines
 		UpdateSelectedText(func cData {
 			aList = str2list(cData)
-			for cItem in aList
-				if len(cItem) > 3
-					if cItem[1] = '/' and cItem[2] = '/'
-						cItem = substr(cItem, 4)
-						loop
-					ok
+		if cData[len(cData)] = char(10)
+			aList + ""      # This check to overcome trimming of EOL by str2list() function
+		ok
+		for cItem in aList
+			if len(cItem) > 1
+				if cItem[1] = '/' and cItem[2] = '/'
+					cItem = substr(cItem, 3)
+					loop
 				ok
-				cItem = "// " + cItem
-			next
+			ok
+			cItem = "//" + cItem
+		next
 			return list2str(aList)
 		})
 
@@ -127,19 +129,9 @@ class RNoteEditMenu
 		})
 
 	func UpdateSelectedText fFunction
-		oCursor = textedit1.textCursor()
-		nStart = oCursor.SelectionStart() + 1
-		nEnd = oCursor.SelectionEnd() + 1
-		cStr = textedit1.toPlainText()
-		cNewStr = ""
-		if nStart > 1
-			cNewStr += left(cStr,nStart-1)
+		seltext = textedit1.textCursor().selectedtext()
+		seltext = substr(seltext, char(226) + char(128) + char(169), char(10))      # This line corrects chars of EOL caused by selectedtext()
+		if len(seltext) > 0
+			textedit1.textcursor().insertText(call fFunction(seltext))
 		ok
-
-		cNewStr2 = substr(cStr,nStart,nEnd-nStart)
-		cNewStr += call fFunction(cNewStr2)
-
-		if nEnd < len(cStr)
-			cNewStr += substr(cStr,nEnd)
-		ok
-		textedit1.setPlainText(cNewStr)
+		

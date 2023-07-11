@@ -1,4 +1,4 @@
-oInsert 	= NULL
+oInsert 	    = NULL
 templateList 	= NULL
 
 load "templates.ring"
@@ -8,14 +8,14 @@ class RNoteInsertText
 	func OpenInsertWindow
 
 		oInsert = new QWidget() {
-			setwindowtitle("Insert Text")
+			setwindowtitle(T_RINGNOTEPAD_INSERTTEXT) # "Insert Text"
 			resize(400,350)
 			setwindowflags(Qt_WindowStaysOnTopHint)
 
 
 			templateLabel = new QLabel(oInsert) {
 				setGeometry(50,30,100,20)
-				settext("Insert Text : ")
+				settext(T_RINGNOTEPAD_INSERTTEXTCOLON) # "Insert Text : "
 			}
           
 			templateList = new QListWidget(oInsert) {
@@ -28,13 +28,13 @@ class RNoteInsertText
  
 			BtntnOk = new qpushbutton(oInsert) {
 				setgeometry(180,250,50,50)
-				setText(T_FROMDESIGNER_WF_OK)
+				setText(T_RINGNOTEPAD_INSERTTEXTOK)
 				setClickEvent(Method(:insertText))
 			}
 
 			BtnCancel = new qpushbutton(oInsert) {
 				setgeometry(250,250,50,50)
-				setText(T_FROMDESIGNER_WF_CANCEL)
+				setText(T_RINGNOTEPAD_INSERTTEXTCANCEL)
 				setClickEvent(Method(:pCancel))
 			}
 
@@ -63,15 +63,7 @@ class RNoteInsertText
 		nr = templateList.currentRow()+1
 		cFunction = aCodeTemplates[nr][2]
 		output = call cFunction()
-		cTextContent = textedit1.toplaintext()
-		oCursor = textedit1.textcursor()
-		nPosStart = oCursor.Position()
-		nPosEnd = len(cTextContent) - nPosStart
-		cNewContent = substr(cTextContent,1,nPosStart)+ output +
-			substr(cTextContent,nPosStart+1,nPosEnd)
-		textedit1.setPlaintext(cNewContent)
-		oCursor.setposition(nPosStart+len(output),0)
-		textedit1.settextcursor(oCursor)
+		textedit1.textcursor().insertText(output)
 
 	func pCancel
 
