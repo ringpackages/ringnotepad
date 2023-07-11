@@ -5,11 +5,11 @@ aPackageInfo = [
 	:developer = "Mahmoud Fayed",
 	:email = "msfclipper@yahoo.com",
 	:license = "MIT License",
-	:version = "1.0.21",
+	:version = "1.0.22",
 	:ringversion = "1.18",
 	:versions = 	[
 		[
-			:version = "1.0.21",
+			:version = "1.0.22",
 			:branch = "master"
 		]
 	],
@@ -122,7 +122,7 @@ aPackageInfo = [
 		"tools/ringnotepad/src/rnotetreeviewevents.ring",
 		"tools/ringnotepad/src/rnoteviewmenu.ring",
 		"tools/ringnotepad/src/rnotewebbrowser.ring",
-		"tools/ringnotepad/src/templates.ring"
+		"tools/ringnotepad/src/templates.ring",
 		"tools/ringnotepad/src/rnoteselectfile.ring",
 		"tools/ringnotepad/translation/arabic.ring",
 		"tools/ringnotepad/translation/english.ring"
