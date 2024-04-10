@@ -894,7 +894,7 @@ class RNoteMainWindow
 				setStylesheet("font-size: 30")
 				setclickedEvent(Method(:ChangeFile))
 				setActivatedEvent(Method(:ChangeFile))
-				setGeometry(00,00,200,400)
+				setGeometry(0,0,200,400)
 				setminimumwidth(floor(this.oDesktop.width()*this.oDesktop.nProjectFilesPer))
                 		chdir(this.cStartUpFolder)
 				oDir = new QDir()
@@ -933,9 +933,7 @@ class RNoteMainWindow
 				setexpanded(myindex,true)
 				header().hide()
 				chdir(exefolder())
-				if not ismacosx()
-					this.cWebsite = "file:///"+oDir.CurrentPath() + "/../documents/build/html/index.html"
-				ok
+				this.cWebsite = this.GetHelpURL()
 			}
 			this.oDockProjectFiles = new qdockwidget(this.win1,0) {
 				myFilter = new qAllEvents(this.oDockProjectFiles)
@@ -1182,10 +1180,7 @@ class RNoteMainWindow
 		}
 
 	func RingNotepadXButton
-		SaveSettings() 
-		if isObject(oWebView)
-			oWebView.close()
-		ok
+		SaveSettings()
 		oApp.Quit()
 
 	func EditFullScreen
@@ -1194,6 +1189,8 @@ class RNoteMainWindow
 			textedit1.setParent(oTabsAndText)
 			oLayoutTabsText.AddWidget(textedit1)
 			textedit1 { show() setfocus(7) }
+			this.win1.show() 
+			ActivateSourceCodeWindow()
 		else 
 			oDockSourceCode.hide()
 			textedit1 { 
@@ -1201,15 +1198,32 @@ class RNoteMainWindow
 				showfullscreen()
 				setfocus(7)
 			}
+			this.win1.hide()
 		ok
 		lEditboxFullScreen = ! lEditboxFullScreen 
 
 	func TextEditKeyPress
-		nKeyCode = this.oFilterTextEdit.getkeycode()
+		nKeyCode  = this.oFilterTextEdit.getkeycode()
+		nModifier = this.oFilterTextEdit.getModifiers()
+		K_Ctrl    = 67108864
+
 		# Check CTRL+SHIFT+F1
-		if lEditboxFullScreen and nKeyCode = Qt_Key_Escape
-			EditFullScreen()
-			return
+		if lEditboxFullScreen 
+			if nKeyCode = Qt_Key_Escape
+				EditFullScreen()
+				return
+			but nModifier = K_Ctrl 
+				if nKeyCode = Qt_Key_G 
+					GoTo()
+					return
+				but nKeyCode = Qt_Key_F
+					OpenFindWindow()
+					return
+				but nKeyCode = Qt_Key_H
+					TabWidth()
+					return
+				ok 			
+			ok
 		ok
 		this.oFilterTextEdit.setEventoutput(False)
 

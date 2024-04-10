@@ -134,7 +134,7 @@ T_RINGNOTEPAD_GUILIBRARY = "GUI Library"
 T_RINGNOTEPAD_ABOUT = "About"
 T_RINGNOTEPAD_READY = "Ready!"
 
-T_RINGNOTEPAD_BROWSERLOCALHELP = "Local Help"
+T_RINGNOTEPAD_BROWSERLOCALHELP = "Ring Documentation"
 T_RINGNOTEPAD_BROWSERRINGWEBSITE = "Ring Website"
 T_RINGNOTEPAD_BRWOSERRINGSAMPLES = "Ring Samples (Rosetta Code)"
 T_RINGNOTEPAD_BROWSERRINGRESOURCES = "Ring Resources"
@@ -205,7 +205,7 @@ T_RINGNOTEPAD_HELPGUILIBNAME     = "This application uses the Qt Framework throu
 T_RINGNOTEPAD_HELPABOUT		     = "About"
 T_RINGNOTEPAD_HELPAPPRINGVERSION = "Ring Notepad (Ring Version : "	
 T_RINGNOTEPAD_HELPAPPRINGVERSIONAFTER = ")"
-T_RINGNOTEPAD_AUTHOR             = "2016-2023, Mahmoud Fayed <msfclipper@yahoo.com>"
+T_RINGNOTEPAD_AUTHOR             = "2016-2024, Mahmoud Fayed <msfclipper@yahoo.com>"
 
 T_RINGNOTEPAD_AUTOCOMPLETEWAIT    = "Prepare Auto-Complete ... Please Wait!"
 T_RINGNOTEPAD_AUTOCOMPLETEPREPARE = "Prepare Auto-Complete ... Get File Words!"

@@ -8,11 +8,11 @@ class RNoteAutoComplete
 		# Add Ring Keywords
 			aKeywords = ["again","and","but","bye","call","case","catch",
 				"changeringkeyword","changeringoperator","class",
-				"def","do","done","else","elseif","end","exit","for","from",
+				"def","disablehashcomments","do","done","else","elseif","end","exit","for","from",
 				"func","get","give","if","import","in","load","loadsyntax",
 				"loop","new","next","not","off","ok","on","or","other",
 				"package","private","put","return","see","step","switch",
-				"to","try","while","endfunc","endclass","endpackage",
+				"to","try","while","enablehashcomments","endfunc","endclass","endpackage",
 				"endif","endfor","endwhile","endswitch","endtry",
 				"function","endfunction","break","continue"]
 			AddItems(aKeywords,oAutoCompleteList)
@@ -47,8 +47,48 @@ class RNoteAutoComplete
 			next
 			AddItems(aClassesList,oAutoCompleteList)
 		# Add Ring Libraries
-			aLibsList = ['load "guilib.ring"' , 'load "stdlib.ring"' ,
-					'load "weblib.ring"', 'load "ringlibcurl.ring"']
+			aLibsList = [   'load "stdlib.ring"' ,
+					'load "stdlibcore.ring"',
+					'load "stdlibclasses.ring"',
+					'load "lightguilib.ring"',
+					'load "guilib.ring"',
+					'load "consolecolors.ring"',
+					'load "rogueutil.ring"',
+					'load "csvlib.ring"',
+					'load "jsonlib.ring"',
+					'load "fastpro.ring"',
+					'load "gamelib.ring"',
+					'load "raylib.ring"',
+					'load "gameengine.ring"',
+					'load "libcurl.ring"',
+					'load "internetlib.ring"',
+					'load "httplib.ring"',
+					'load "openssllib.ring"',
+					'load "sqlitelib.ring"',
+					'load "mysqllib.ring"',
+					'load "postgresqllib.ring"',
+					'load "odbclib.ring"',
+					'load "libsdl.ring"',
+					'load "libui.ring"',
+					'load "libuv.ring"',
+					'load "matrixlib.ring"',
+					'load "murmurhashlib.ring"',
+					'load "naturallib.ring"',
+					'load "objectslib.ring"',
+					'load "freeglut.ring"',
+					'load "opengl21lib.ring"',
+					'load "stbimage.ring"',
+					'load "threads.ring"',
+					'load "tilengine.ring"',
+					'load "tokenslib.ring"',
+					'load "typehints.ring"',
+					'load "bignumber.ring"',
+					'load "zerolib.ring"',
+					'load "ziplib.ring"',
+					'load "winapi.ring"',
+					'load "wincreg.ring"',
+					'load "tracelib.ring"',
+					'load "weblib.ring"']
 			AddItems(aLibsList,oAutoCompleteList)
 		# Save the List Size
 			nAutoCompleteListSize = oAutoCompleteList.Count()

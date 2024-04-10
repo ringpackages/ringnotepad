@@ -8,7 +8,7 @@ class RNoteControllerBase from WindowsControllerParent
 	aTextColor 		= [0,0,0]
 	aBackColor 		= [255,255,255]
 
-	cFont 			= 'Consolas,16,-1,5,50,0,0,0,0,0'
+	cFont 			= GetFontFamilyName(:Consolas) + ',16,-1,5,50,0,0,0,0,0'
 	oTFont 			= new qfont("",0,0,0)
 	lSetProjectFilesFont	= True
 
@@ -29,7 +29,7 @@ class RNoteControllerBase from WindowsControllerParent
 	nTabSpaces 		= 8
 
 	aBrowserLinks 		= [
-		[T_RINGNOTEPAD_BROWSERLOCALHELP, "file:///"+substr(exefolder(),"\","/") + "../documents/build/html/index.html"],
+		[T_RINGNOTEPAD_BROWSERLOCALHELP, GetHelpURL()],
 		[T_RINGNOTEPAD_BROWSERRINGWEBSITE,"http://ring-lang.github.io"],
 		[T_RINGNOTEPAD_BRWOSERRINGSAMPLES,"https://rosettacode.org/wiki/Category:Ring"],
 		[T_RINGNOTEPAD_BROWSERRINGRESOURCES,"http://ring-lang.github.io/resources.html"],
@@ -151,3 +151,26 @@ class RNoteControllerBase from WindowsControllerParent
 	# Apperance menu 
 		oCheckAction1 oCheckAction2 oCheckAction3 oCheckAction4
 		oCheckAction5 oCheckAction6 oCheckAction7
+
+	func GetFontFamilyName cFamily
+		if cFamily = :Consolas
+			cFontFamilyName = "Consolas"
+		else
+			cFontFamilyName = "Roboto"	
+		ok 		
+		if isMacOSX()
+			cFontFamilyName = "Monaco"
+		but isLinux()
+			cFontFamilyName = "Ubuntu Mono"
+		ok
+		return cFontFamilyName
+
+	func GetHelpURL
+		cFile = substr(exefolder(),"\","/") + "../documents/build/html/index.html"
+		cFile = substr(cFile,"/bin/../","/")
+		if fexists(cFile )		
+			cFile = "file:///"+cFile
+		else 
+			cFile = "http://ring-lang.github.io/doc"+version()+"/index.html" 
+		ok
+		return cFile 

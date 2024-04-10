@@ -134,7 +134,7 @@ T_RINGNOTEPAD_GUILIBRARY = "مكتبة واجهة المستخدم الرسوم�
 T_RINGNOTEPAD_ABOUT = "حول البرنامج"
 T_RINGNOTEPAD_READY = "جاهز"
 
-T_RINGNOTEPAD_BROWSERLOCALHELP = "ملف التعليمات المحلي"
+T_RINGNOTEPAD_BROWSERLOCALHELP = "ملف التعليمات"
 T_RINGNOTEPAD_BROWSERRINGWEBSITE = "موقع لغة الرينج"
 T_RINGNOTEPAD_BRWOSERRINGSAMPLES = "أمثلة لغة الرينج"
 T_RINGNOTEPAD_BROWSERRINGRESOURCES = "موارد خاصة بالرينج"
@@ -205,7 +205,7 @@ T_RINGNOTEPAD_HELPGUILIBNAME     = "يستعمل هذا التطبيق مكتب�
 T_RINGNOTEPAD_HELPABOUT		     = "حول"
 T_RINGNOTEPAD_HELPAPPRINGVERSION = "محرر رينج (إصدار رينج : "	
 T_RINGNOTEPAD_HELPAPPRINGVERSIONAFTER = ")"
-T_RINGNOTEPAD_AUTHOR             = "2016-2023, محمود سمير فايد <msfclipper@yahoo.com>"
+T_RINGNOTEPAD_AUTHOR             = "2016-2024, محمود سمير فايد <msfclipper@yahoo.com>"
 
 T_RINGNOTEPAD_AUTOCOMPLETEWAIT    = "نجهيز الإكمال التلقائى - فضلا انتظر"
 T_RINGNOTEPAD_AUTOCOMPLETEPREPARE = "تجهيز الاكمال التلقائى - الحصول على الكلمات"
