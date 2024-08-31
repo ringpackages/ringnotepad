@@ -175,7 +175,6 @@ T_RINGNOTEPAD_CLOSEALL = "Close All"
 
 T_RINGNOTEPAD_ENTERTHELINENUMBER = "Enter the line number?"
 T_RINGNOTEPAD_LINE = "Line"
-T_RINGNOTEPAD_DEFAULTLINE = "1"
 
 T_RINGNOTEPAD_INSERTTEXT       = "Insert Text"
 T_RINGNOTEPAD_INSERTTEXTCOLON  = "Insert Text : "
@@ -195,7 +194,6 @@ T_RINGNOTEPAD_DOYOUWANTTOSAVECHANGES = "Do you want to save your changes?"
 
 T_RINGNOTEPAD_SETTHETABWIDTH     = "Set the Tab Width"
 T_RINGNOTEPAD_SPACESCOUNT        = "Spaces Count"
-T_RINGNOTEPAD_DEFAULTSPACESCOUNT = "1"
 
 T_RINGNOTEPAD_HELPPL             = "Programming Language"
 T_RINGNOTEPAD_HELPLANGUSED       = "This application is developed using the Ring programming language"
