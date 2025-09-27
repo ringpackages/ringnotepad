@@ -110,6 +110,7 @@ T_RINGNOTEPAD_MAINFILERUNWEBAPPLICATIONOPENINBROWSER = "تشغيل الملف ا
 T_RINGNOTEPAD_FORMDESIGNER = "مصمم النموذج"
 T_RINGNOTEPAD_RINGREPLCONSOLE = "نافذة الاوامر - واجهة مستخدم خطية"
 T_RINGNOTEPAD_RINGREPLGUI = "نافذة الاوامر - واجهة مستخدم رسومية"
+T_RINGNOTEPAD_RINGPMGUI = "مدير الحزم - واجهة مستخدم رسومية"
 T_RINGNOTEPAD_OPERATINGSYSTEMTOOLS = "أدوات نظام التشغيل"
 T_RINGNOTEPAD_TERMINALCOMMANDPROMPT = "سطر الاوامر"
 T_RINGNOTEPAD_FILESMANAGEREXPLORER = "مدير الملفات"
@@ -203,7 +204,7 @@ T_RINGNOTEPAD_HELPGUILIBNAME     = "يستعمل هذا التطبيق مكتب�
 T_RINGNOTEPAD_HELPABOUT		     = "حول"
 T_RINGNOTEPAD_HELPAPPRINGVERSION = "محرر رينج (إصدار رينج : "	
 T_RINGNOTEPAD_HELPAPPRINGVERSIONAFTER = ")"
-T_RINGNOTEPAD_AUTHOR             = "2016-2024, محمود سمير فايد <msfclipper@yahoo.com>"
+T_RINGNOTEPAD_AUTHOR             = "2016-2025, محمود سمير فايد <msfclipper@yahoo.com>"
 
 T_RINGNOTEPAD_AUTOCOMPLETEWAIT    = "نجهيز الإكمال التلقائى - فضلا انتظر"
 T_RINGNOTEPAD_AUTOCOMPLETEPREPARE = "تجهيز الاكمال التلقائى - الحصول على الكلمات"
