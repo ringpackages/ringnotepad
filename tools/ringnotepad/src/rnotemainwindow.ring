@@ -1050,7 +1050,7 @@ class RNoteMainWindow
 					setText(T_RINGNOTEPAD_GO) # "Go"
 					setClickEvent(Method(:WebGo))
 				}
-				oWBBack = new qPushButton(this.win1) {
+				this.oWBBack = new qPushButton(this.win1) {
 					setText(T_RINGNOTEPAD_BACK) # "Back"
 					setClickEvent(Method(:WebBack))
 				}
@@ -1058,11 +1058,9 @@ class RNoteMainWindow
 					addWidget(oWBLabel)
 					addWidget(this.oWBText)
 					addWidget(oWBGo)
-					addWidget(oWBBack)
+					addWidget(this.oWBBack)
 				}
-				this.oWebView = new qWebView(this.win1) {
-					loadpage(new qurl(this.cWebSite))
-				}
+				this.createWebBrowserControl()
 				oWBlayout2 = new qVBoxLayout() {
 					addLayout(oWBLayout1)
 					addWidget(this.oWebView)
